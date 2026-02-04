@@ -1,4 +1,5 @@
 const form = document.getElementById('loginForm');
+const API_URL = 'https://auth-project-2-f7z0.onrender.com'
 
 if (!form) {
   console.error('Login form not found');

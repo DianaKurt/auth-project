@@ -1,4 +1,5 @@
 const form = document.getElementById('registerForm');
+const API_URL = 'https://auth-project-2-f7z0.onrender.com'
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();

@@ -1,7 +1,9 @@
+const API_URL = 'https://auth-project-2-f7z0.onrender.com'
 const token = localStorage.getItem('token');
 const btnBlock = document.getElementById('btnBlock');
 const btnUnblock = document.getElementById('btnUnblock');
 const btnDelete = document.getElementById('btnDelete');
+
 
 
 if (!token) {
