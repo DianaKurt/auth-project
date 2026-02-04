@@ -1,4 +1,3 @@
-const form = document.getElementById('registerForm');
 const API_URL = 'https://auth-project-2-f7z0.onrender.com'
 
 form.addEventListener('submit', async (e) => {
@@ -9,7 +8,7 @@ form.addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
 
   try {
-    const res = await fetch(`${API_URL}/auth/register`, {
+    const res = await fetch('/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

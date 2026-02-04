@@ -1,35 +1,37 @@
 import express from 'express';
-import cors from 'cors';
+//import cors from 'cors';
 import dotenv from 'dotenv';
 import usersRoutes from './routes/users.js';
 import authRoutes from './routes/auth.routes.js';
 import path from 'path'
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
 const app = express(); // создаём app первым деломё
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
-app.use(express.json());
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// подключаем роуты
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '../public')));
+app.use(cors());
+
+// routes
+import authRoutes from './routes/auth.js';
+import usersRoutes from './routes/users.js';
+
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
 
-// раздача фронта
-app.use(express.static(path.join('.', 'public')));
-
-// все GET-запросы возвращают index.html
+// IMPORTANT: fallback
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('public', 'index.html'));
 })
-
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-app.use(cors({
-  origin: 'https://auth-front-1-l6dc.onrender.com'
-}));
+app.listen(process.env.PORT || 4000);

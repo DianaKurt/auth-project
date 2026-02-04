@@ -22,6 +22,7 @@ router.post('/register', async (req, res) => {
     
 
     res.json({ message: 'Registered successfully' });
+    console.error('REGISTER ERROR:', err);
 
   } catch (err) {
     console.error('REGISTER ERROR:', err);

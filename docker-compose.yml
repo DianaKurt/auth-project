@@ -1,31 +1,27 @@
 version: "3.9"
 
 services:
-  postgres:
-    env_file:
-      - .env
-    build:
-      context: ./docker/postgres
-    container_name: postgres_test_projectd
-    restart: unless-stopped
-
+  backend:
+    build: .
+    ports:
+      - "4000:4000"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      TZ: UTC
+      DATABASE_URL: postgres://diana:Ssr%23%3B%40%248@db:5432/user_management
+      JWT_SECRET: SECRET
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: user_management
+      POSTGRES_USER: diana
+      POSTGRES_PASSWORD: Ssr%23%3B%40%248
 
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-
+      - "5432:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data
-
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U diana -d user_management"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  pg_data:
+  pgdata:

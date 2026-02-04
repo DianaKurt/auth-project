@@ -1,7 +1,4 @@
-const API_URL = 'https://auth-project-2-f7z0.onrender.com'
 const form = document.getElementById('loginForm');
-
-
 if (!form) {
   console.error('Login form not found');
 }
@@ -13,7 +10,7 @@ form.addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
 
   try {
-    const res = await fetch(`${API_URL}/auth/login`, {
+    const res = await fetch('/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
