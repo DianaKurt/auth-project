@@ -18,10 +18,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(cors());
 
-// routes
-import authRoutes from './routes/auth.js';
-import usersRoutes from './routes/users.js';
-
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
 
