@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import usersRoutes from './routes/users.js';
 import authRoutes from './routes/auth.routes.js';
+import path from 'path'
 
 dotenv.config();
 
@@ -16,7 +17,14 @@ app.use(express.json());
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
 
-app.use('/frontend', express.static('frontend'));
+// раздача фронта
+app.use(express.static(path.join('.', 'public')));
+
+// все GET-запросы возвращают index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('public', 'index.html'));
+})
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
