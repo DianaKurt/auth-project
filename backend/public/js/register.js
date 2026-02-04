@@ -24,7 +24,7 @@ form.addEventListener('submit', async (e) => {
     }
 
     alert('Registration successful!');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 
   } catch (err) {
     console.error(err);

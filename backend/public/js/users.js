@@ -5,7 +5,7 @@ const btnDelete = document.getElementById('btnDelete');
 
 
 if (!token) {
-  window.location.href = 'login.html';
+  window.location.href = 'index.html';
 }
 fetch('http://localhost:4000/users', {
   headers: {
