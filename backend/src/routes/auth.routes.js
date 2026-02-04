@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { getUniqIdValue } from '/backend/utils/getUniqIdValue.js';
+import { getUniqIdValue } from '../utils/getUniqIdValue.js';
 import auth from '../middleware/auth.js';
 
 
