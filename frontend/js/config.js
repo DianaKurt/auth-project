@@ -1,0 +1,1 @@
+const API_URL = "https://auth-project-2-f7z0.onrender.com/"
