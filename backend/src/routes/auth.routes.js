@@ -3,11 +3,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { getUniqIdValue } from '../utils/getUniqIdValue.js';
 import auth from '../middleware/auth.js';
-
-
 import pool from '../db.js';
 
 const router = Router();
+
 
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
@@ -17,14 +16,15 @@ router.post('/register', async (req, res) => {
 
     await pool.query(
       `INSERT INTO users (id, name, email, password_hash, status)
-       VALUES ($1, $2, $3, $4)`,
-      [getUniqIdValue(), name, email, passwordHash]
+       VALUES ($1, $2, $3, $4, $5)`,
+      [getUniqIdValue(), name, email, passwordHash, 'active']
     );
     
 
     res.json({ message: 'Registered successfully' });
+
   } catch (err) {
-    // note: email uniqueness error comes from DB index
+    console.error('REGISTER ERROR:', err);
     res.status(400).json({ error: 'Registration failed' });
   }
 });
@@ -40,6 +40,7 @@ router.post('/login', async (req, res) => {
       'SELECT * FROM users WHERE email = $1',
       [email]
     );
+
     const user = result.rows[0];
 
     if (!user) {
@@ -50,7 +51,6 @@ router.post('/login', async (req, res) => {
       return res.status(403).json({ error: 'User is blocked' });
     }
     
-
     const ok = await bcrypt.compare(password, user.password_hash);
     if (!ok) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -75,32 +75,12 @@ router.post('/login', async (req, res) => {
   }
 });
 
-export default router;
 
-router.get('/auth/debug/users', async (req, res) => {
-  const result = await pool.query('SELECT id, name, email, status, last_login FROM users');
-  res.json(result.rows);
-});
-
-router.post('/users/unblock', auth, async (req, res) => {
-  const { ids } = req.body;
-
-  await pool.query(
-    `UPDATE users 
-     SET status = 'active' 
-     WHERE id = ANY9($1::uuid[])`,
-    [ids]
-  );
-  console.log('ROWS UPDATED:', result.rowCount);
-  res.json({ success: true });
-});
-
-
-
+//get users
 router.get('/users', auth, async (req, res) => {
   const { sort = 'last_login', order = 'desc' } = req.query;
 
-  // IMPORTANT: whitelist, защита от SQL injection
+  // IMPORTANT: whitelist, SQL injection
   const allowedSort = ['last_login'];
   const allowedOrder = ['asc', 'desc'];
 
@@ -116,3 +96,54 @@ router.get('/users', auth, async (req, res) => {
   res.json(result.rows);
 });
 
+//block users
+router.post('/users/block', auth, async (req, res) => {
+  const { ids } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE users SET status = 'blocked' WHERE id = ANY($1::uuid[])`,
+      [ids]
+    );
+    console.log('ROWS BLOCKED:', result.rowCount);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('BLOCK ERROR:', err);
+    res.status(500).json({ error: 'Failed to block users' });
+  }
+});
+//unblock users
+router.post('/users/unblock', auth, async (req, res) => {
+  const { ids } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE users SET status = 'active' WHERE id = ANY($1::uuid[])`,
+      [ids]
+    );
+    console.log('ROWS UNBLOCKED:', result.rowCount);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('UNBLOCK ERROR:', err);
+    res.status(500).json({ error: 'Failed to unblock users' });
+  }
+});
+
+//delete users
+router.delete('/users', auth, async (req, res) => {
+  const { ids } = req.body;
+
+  try {
+    const result = await pool.query(
+      `DELETE FROM users WHERE id = ANY($1::uuid[])`,
+      [ids]
+    );
+    console.log('ROWS DELETED:', result.rowCount);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('DELETE ERROR:', err);
+    res.status(500).json({ error: 'Failed to delete users' });
+  }
+});
+
+export default router;
