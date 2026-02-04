@@ -29,3 +29,7 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.use(cors({
+  origin: 'https://auth-front-1-l6dc.onrender.com'
+}));
