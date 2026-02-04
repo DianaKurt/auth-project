@@ -5,19 +5,15 @@ services:
     build: .
     ports:
       - "4000:4000"
-    environment:
-      DATABASE_URL: postgres://diana:Ssr%23%3B%40%248@db:5432/user_management
-      JWT_SECRET: SECRET
+    env_file:
+      - .env
     depends_on:
       - db
 
   db:
     image: postgres:15
-    environment:
-      POSTGRES_DB: user_management
-      POSTGRES_USER: diana
-      POSTGRES_PASSWORD: Ssr%23%3B%40%248
-
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     volumes:
