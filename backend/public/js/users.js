@@ -7,7 +7,7 @@ const btnDelete = document.getElementById('btnDelete');
 if (!token) {
   window.location.href = 'index.html';
 }
-fetch('http://localhost:4000/users', {
+fetch(`${API_URL}/users`, {
   headers: {
     Authorization: 'Bearer ' + token
   }
