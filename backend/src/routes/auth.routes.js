@@ -25,8 +25,19 @@ router.post('/register', async (req, res) => {
 
   } catch (err) {
     console.error('REGISTER ERROR:', err);
-    res.status(400).json({ error: 'Registration failed' });
+  
+    // PostgreSQL unique violation
+    if (err.code === '23505') {
+      return res.status(409).json({
+        message: 'Email already exists'
+      });
+    }
+  
+    return res.status(500).json({
+      message: 'Registration failed'
+    });
   }
+  
 });
 
 /**
