@@ -1,23 +1,32 @@
 version: "3.9"
 
 services:
-  backend:
-    build: .
-    ports:
-      - "4000:4000"
+  postgres:
     env_file:
       - .env
-    depends_on:
-      - db
+    build:
+      context: ./docker/postgres
+    container_name: postgres_test_projectd
+    restart: unless-stopped
 
-  db:
-    image: postgres:15
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: UTC
+
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U diana -d user_management"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
-  pgdata:
+  pg_data:
+

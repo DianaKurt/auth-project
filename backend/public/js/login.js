@@ -1,3 +1,4 @@
+const API_URL = 'http://localhost:4000';
 const form = document.getElementById('loginForm');
 if (!form) {
   console.error('Login form not found');
@@ -10,7 +11,7 @@ form.addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
 
   try {
-    const res = await fetch('/auth/login', {
+    const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

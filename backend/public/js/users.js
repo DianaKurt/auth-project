@@ -1,3 +1,4 @@
+const API_URL = 'http://localhost:4000';
 const token = localStorage.getItem('token');
 const btnBlock = document.getElementById('btnBlock');
 const btnUnblock = document.getElementById('btnUnblock');
@@ -8,7 +9,7 @@ const btnDelete = document.getElementById('btnDelete');
 if (!token) {
   window.location.href = 'index.html';
 }
-fetch('/users', {
+fetch(`${API_URL}/users`, {
   headers: {
     Authorization: 'Bearer ' + token
   }
@@ -106,7 +107,7 @@ function getSelectedIds() {
 document.getElementById('btnBlock').addEventListener('click', () => {
   const ids = getSelectedIds();
 
-  fetch('/users/block', {
+  fetch(`${API_URL}/users/block`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -119,7 +120,7 @@ document.getElementById('btnBlock').addEventListener('click', () => {
 document.getElementById('btnDelete').addEventListener('click', () => {
   const ids = getSelectedIds();
 
-  fetch('/users', {
+  fetch(`${API_URL}/users`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -154,7 +155,7 @@ let isAsc = false;
 document.getElementById('sortLastLogin').addEventListener('click', () => {
   isAsc = !isAsc;
 
-  fetch(`/users?sort=last_login&order=${isAsc ? 'asc' : 'desc'}`, {
+  fetch(`${API_URL}/users?sort=last_login&order=${isAsc ? 'asc' : 'desc'}`, {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -167,7 +168,7 @@ document.getElementById('sortLastLogin').addEventListener('click', () => {
 btnUnblock.addEventListener('click', () => {
   const ids = getSelectedIds();
 
-  fetch('/users/unblock', {
+  fetch(`${API_URL}/users/unblock`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
