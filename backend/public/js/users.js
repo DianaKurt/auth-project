@@ -1,4 +1,12 @@
-const API_URL = 'http://localhost:4000';
+// Если у тебя есть локальный бэкенд
+const LOCAL_API_URL = 'http://localhost:5000';
+const PROD_API_URL = 'https://auth-project-2-f7z0.onrender.com';
+
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? LOCAL_API_URL
+  : PROD_API_URL;
+
+console.log('Using API URL:', API_URL);
 const token = localStorage.getItem('token');
 const btnBlock = document.getElementById('btnBlock');
 const btnUnblock = document.getElementById('btnUnblock');
@@ -177,4 +185,3 @@ btnUnblock.addEventListener('click', () => {
     body: JSON.stringify({ ids })
   }).then(() => location.reload());
 });
-
