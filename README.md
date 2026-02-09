@@ -92,7 +92,7 @@ The app is ready for testing and development
 - Deployment-ready application setup
 The app is ready for testing and development
 
-#Purpose of the Project
+# Purpose of the Project
 This project was created as part of a technical task to demonstrate:
 Understanding of full-stack architecture
 Proper form validation practices
