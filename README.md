@@ -1,17 +1,17 @@
 #Form Validation App
-Overview
+##Overview
 Form Validation App is a full-stack web application that demonstrates form validation, user interaction, and backend communication using a real database.
 The project combines a clean Bootstrap-based UI with a Node.js backend and PostgreSQL database, showcasing a complete request–validation–persistence flow.
 
-#Tech Stack
+##Tech Stack
 
-#Frontend
+##Frontend
 HTML5
 CSS3
 Bootstrap (layout, components, responsive UI)
 Vanilla JavaScript
 
-#Backend
+##Backend
 Node.js
 Express.js
 REST API architecture
@@ -34,12 +34,12 @@ No authentication required
 
 #Form Validation Logic
 Validation is implemented on two levels:
-#Client-side
+##Client-side
 Required fields
 Format validation (e.g. email)
 Instant feedback without page reload
 Prevents invalid submissions early
-#Server-side
+##Server-side
 Re-validation of incoming data
 Protection against malformed requests
 Clean API error responses
@@ -69,7 +69,7 @@ Easy setup without manual DB installation
 Reproducible local runs
 
 #Deployment
-The application is deployed on Render:
+The application is deployed on ##Render:
 Backend API hosted as a web service
 PostgreSQL hosted as a managed database
 Frontend served via the backend
